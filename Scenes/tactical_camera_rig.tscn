@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://b7704vfnkc0iv"]
+
+[ext_resource type="Script" uid="uid://b55j84c3ppand" path="res://Scripts/camera_script.gd" id="1_2ewr4"]
+
+[node name="TacticalCameraRig" type="Node3D"]
+script = ExtResource("1_2ewr4")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 10, 10)
+projection = 1
+current = true

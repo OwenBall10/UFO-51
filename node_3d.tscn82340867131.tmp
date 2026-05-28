@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://ddtgtc7rr4t62"]
+
+[ext_resource type="PackedScene" uid="uid://dmp2w2jguiyks" path="res://Scenes/cannon_root.tscn" id="1_a202f"]
+[ext_resource type="Script" uid="uid://b55j84c3ppand" path="res://Scripts/camera_script.gd" id="2_noarx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_noarx"]
+albedo_color = Color(0.20248899, 0.85591793, 0.36262015, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_a0tk4"]
+material = SubResource("StandardMaterial3D_noarx")
+size = Vector2(500, 500)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_r3fl7"]
+data = PackedVector3Array(250, 0, 250, -250, 0, 250, 250, 0, -250, -250, 0, 250, -250, 0, -250, 250, 0, -250)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("PlaneMesh_a0tk4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("ConcavePolygonShape3D_r3fl7")
+
+[node name="CannonRoot" parent="." instance=ExtResource("1_a202f")]
+transform = Transform3D(0.40335163, 0.7289141, 0.5531652, -0.002958425, 0.6055578, -0.7957957, -0.91504043, 0.31934905, 0.24640927, -0.32887417, 2.703319, 0)
+
+[node name="TacticalCameraRig" type="Node3D" parent="."]
+script = ExtResource("2_noarx")
+
+[node name="Camera3D" type="Camera3D" parent="TacticalCameraRig"]
+transform = Transform3D(1, 0, 0, 0, 0.8081442, 0.58898485, 0, -0.58898485, 0.8081442, 0, 10, 10)
+current = true

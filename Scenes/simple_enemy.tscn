@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://lxmsj1xggrlv"]
+
+[ext_resource type="Script" uid="uid://btgvog2aq67uo" path="res://Scripts/SimpleEnemy.gd" id="1_fsxpk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_251rj"]
+albedo_color = Color(1, 1, 0.16470589, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_251rj"]
+material = SubResource("StandardMaterial3D_251rj")
+size = Vector3(10, 10, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fsxpk"]
+size = Vector3(10, 10, 10)
+
+[node name="SimpleEnemy" type="RigidBody3D"]
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+script = ExtResource("1_fsxpk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.9966791, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_251rj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_fsxpk")
+
+[node name="HealthUI" type="Label3D" parent="."]
+transform = Transform3D(1.890161, 0, 0, 0, 1.6788425, 0, 0, 0, 2.1131284, 0, 6.976172, 0)
+billboard = 1

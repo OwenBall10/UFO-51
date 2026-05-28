@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://o6gppevqmx4j"]
+
+[ext_resource type="Script" uid="uid://8mopxkjgmx6i" path="res://Scripts/hit_detection.gd" id="1_xx61p"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_alhse"]
+albedo_color = Color(1, 0.1764706, 0.06666667, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_alhse"]
+material = SubResource("StandardMaterial3D_alhse")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xx61p"]
+
+[node name="Cannonball" type="RigidBody3D"]
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_xx61p")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_alhse")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_xx61p")
