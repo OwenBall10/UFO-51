@@ -2,6 +2,11 @@ extends Node3D
 
 @export var move_speed: float = 15.0
 
+# --- GRID & RAYCAST VARIABLES ---
+@export var grid_cursor: Node3D # We will assign this in the editor
+@export var cannon: Node3D 
+const FLOOR_COLLISION_MASK: int = 1 # We only want to hit the grass (Layer 1)
+
 var target_y_rotation: float = 0.0
 
 # --- ZOOM VARIABLES ---
@@ -63,3 +68,33 @@ func _unhandled_input(event: InputEvent) -> void:
 			
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			target_fov = clamp(target_fov + zoom_step, min_fov, max_fov)
+			
+
+func _physics_process(delta: float) -> void:
+	# Only bother calculating the grid if we actually linked a cursor in the editor
+	if grid_cursor == null:
+		return
+	
+	if cannon != null and cannon.current_state != 0:
+		grid_cursor.hide()
+		return
+	grid_cursor.show()
+		
+	# 1. Get the 2D mouse position on your screen
+	var mouse_pos = get_viewport().get_mouse_position()
+	
+	# 2. Ask the camera to shoot a laser from that 2D point into the 3D world
+	var ray_origin = camera.project_ray_origin(mouse_pos)
+	var ray_end = ray_origin + camera.project_ray_normal(mouse_pos) * 1000.0
+	
+	# 3. Create the actual raycast query
+	var query = PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
+	query.collision_mask = FLOOR_COLLISION_MASK # Ignore the cannon/enemies!
+	
+	# 4. Ask the physics engine what the laser hit
+	var space_state = get_world_3d().direct_space_state
+	var result = space_state.intersect_ray(query)
+	
+	# 5. If it hit the floor, tell the cursor to snap to that position!
+	if result:
+		grid_cursor.update_position(result.position)

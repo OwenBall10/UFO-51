@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://2nhgjx4d0hs0"]
+[gd_scene load_steps=3 format=3 uid="uid://2nhgjx4d0hs0"]
+
+[ext_resource type="Script" uid="uid://dei8ea51l16l4" path="res://Scripts/grid_script.gd" id="1_ycae1"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_064qx"]
+size = Vector2(10, 10)
 
 [node name="GridCursor" type="MeshInstance3D"]
 mesh = SubResource("PlaneMesh_064qx")
+script = ExtResource("1_ycae1")

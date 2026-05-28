@@ -1,6 +1,6 @@
 extends MeshInstance3D
 
-const TILE_SIZE: float = 2.0 
+const TILE_SIZE: float = 10.0 
 
 # This function takes any 3D coordinate and returns the exact center of the nearest grid tile
 func snap_to_grid(raw_position: Vector3) -> Vector3:
