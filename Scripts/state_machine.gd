@@ -6,7 +6,7 @@ extends Node3D
 @export var projectile_scene: PackedScene
 
 # --- State Machine ---
-enum CannonState { IDLE, AIM_HORIZONTAL, AIM_VERTICAL, POWER_SET, FIRED, MENU_OPEN }
+enum CannonState { IDLE, AIM_HORIZONTAL, AIM_VERTICAL, POWER_SET, FIRED, MENU_OPEN, MOVING }
 var current_state: CannonState = CannonState.IDLE
 
 # --- Node References ---
@@ -28,7 +28,9 @@ var current_horizontal_angle: float = 0.0
 var current_vertical_angle: float = 0.0
 var current_power: float = 0.0
 var power_direction: int = 1
-
+ 
+# --- Extra --- 
+var original_y: float = 0.0
 
 func _ready() -> void:
 	power_bar.max_value = max_power
@@ -147,11 +149,22 @@ func reset_cannon() -> void:
 
 
 func _on_selection_area_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+	if event is InputEventMouseButton and event.pressed:
+		
+		# --- LEFT CLICK: Grab the piece ---
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if current_state == CannonState.IDLE:
+				pick_up()
+				# This line is CRITICAL: it stops the click from passing through 
+				# to the grass, so you don't instantly drop it in the same frame!
+				get_viewport().set_input_as_handled() 
+				
+		# --- RIGHT CLICK: Open the Attack Menu ---
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			if current_state == CannonState.IDLE:
 				current_state = CannonState.MENU_OPEN
 				attack_button.show()
+				get_viewport().set_input_as_handled()
 
 
 func _on_attack_button_pressed() -> void:
@@ -160,3 +173,22 @@ func _on_attack_button_pressed() -> void:
 		current_state = CannonState.AIM_HORIZONTAL
 		horiz_meter.show()
 		crosshair.show()
+
+
+func pick_up() -> void:
+	current_state = CannonState.MOVING
+	original_y = global_position.y # Remember the floor height
+	global_position.y += 0.5 # Lift the piece half a meter into the air
+	set_mesh_transparency(self, 0.6) # Make it 60% transparent
+
+func drop() -> void:
+	current_state = CannonState.IDLE
+	global_position.y = original_y # Snap back down to the board
+	set_mesh_transparency(self, 0.0) # Make it solid again
+
+# This loops through your imported .glb to find the actual visual meshes
+func set_mesh_transparency(node: Node, alpha: float) -> void:
+	if node is MeshInstance3D:
+		node.transparency = alpha
+	for child in node.get_children():
+		set_mesh_transparency(child, alpha)

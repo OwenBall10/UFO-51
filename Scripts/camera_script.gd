@@ -63,12 +63,18 @@ func handle_zoom(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		
+		# --- ZOOM LOGIC ---
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			target_fov = clamp(target_fov - zoom_step, min_fov, max_fov)
 			
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			target_fov = clamp(target_fov + zoom_step, min_fov, max_fov)
 			
+		
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			# If the piece is currently picked up and hovering in the air (State 6)
+			if cannon != null and "current_state" in cannon and cannon.current_state == 6:
+				cannon.drop() # Snap it down onto the tile
 
 func _physics_process(delta: float) -> void:
 	# Only bother calculating the grid if we actually linked a cursor in the editor
@@ -98,3 +104,7 @@ func _physics_process(delta: float) -> void:
 	# 5. If it hit the floor, tell the cursor to snap to that position!
 	if result:
 		grid_cursor.update_position(result.position)
+		
+		if cannon != null and cannon.current_state == 6: 
+			cannon.global_position.x = grid_cursor.global_position.x
+			cannon.global_position.z = grid_cursor.global_position.z
