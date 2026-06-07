@@ -63,48 +63,59 @@ func handle_zoom(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		
-		# --- ZOOM LOGIC ---
+		# --- ZOOM CONTROLS ---
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			target_fov = clamp(target_fov - zoom_step, min_fov, max_fov)
 			
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			target_fov = clamp(target_fov + zoom_step, min_fov, max_fov)
 			
-		
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			# If the piece is currently picked up and hovering in the air (State 6)
-			if cannon != null and "current_state" in cannon and cannon.current_state == 6:
-				cannon.drop() # Snap it down onto the tile
+		# --- TABLETOP DROP CONTROLS ---
+		elif event.button_index == MOUSE_BUTTON_LEFT:
+			if cannon != null and "current_state" in cannon:
+				var state_moving = cannon.CannonState.MOVING if "CannonState" in cannon else 6
+				
+				# If we are holding the piece in the air, slam it down!
+				if cannon.current_state == state_moving:
+					cannon.drop()
+					get_viewport().set_input_as_handled() # Clean up the input stream
 
 func _physics_process(delta: float) -> void:
-	# Only bother calculating the grid if we actually linked a cursor in the editor
 	if grid_cursor == null:
 		return
-	
-	if cannon != null and cannon.current_state != 0:
-		grid_cursor.hide()
-		return
-	grid_cursor.show()
 		
-	# 1. Get the 2D mouse position on your screen
-	var mouse_pos = get_viewport().get_mouse_position()
+	# 1. Hide the grid ONLY if aiming or in menus (Idle is 0, Moving is the pickup state)
+	if cannon != null and "current_state" in cannon:
+		# If the cannon has a state machine, let's get its named states safely
+		var state_idle = cannon.CannonState.IDLE if "CannonState" in cannon else 0
+		var state_moving = cannon.CannonState.MOVING if "CannonState" in cannon else 6
+		
+		# Hide the grid if the cannon is doing an action that isn't Idle or Moving
+		if cannon.current_state != state_idle and cannon.current_state != state_moving:
+			grid_cursor.hide()
+			return
+			
+	grid_cursor.show()
 	
-	# 2. Ask the camera to shoot a laser from that 2D point into the 3D world
+	# 2. Mouse Raycasting Math
+	var mouse_pos = get_viewport().get_mouse_position()
 	var ray_origin = camera.project_ray_origin(mouse_pos)
 	var ray_end = ray_origin + camera.project_ray_normal(mouse_pos) * 1000.0
 	
-	# 3. Create the actual raycast query
 	var query = PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
-	query.collision_mask = FLOOR_COLLISION_MASK # Ignore the cannon/enemies!
+	query.collision_mask = FLOOR_COLLISION_MASK
 	
-	# 4. Ask the physics engine what the laser hit
 	var space_state = get_world_3d().direct_space_state
 	var result = space_state.intersect_ray(query)
 	
-	# 5. If it hit the floor, tell the cursor to snap to that position!
 	if result:
+		# Update the visual blue grid square position on the floor
 		grid_cursor.update_position(result.position)
 		
-		if cannon != null and cannon.current_state == 6: 
-			cannon.global_position.x = grid_cursor.global_position.x
-			cannon.global_position.z = grid_cursor.global_position.z
+		# 3. Tactile Piece Hover Logic
+		# If the cannon is currently picked up, force its X and Z coordinates to match the grid tile
+		if cannon != null and "current_state" in cannon:
+			var state_moving = cannon.CannonState.MOVING if "CannonState" in cannon else 6
+			if cannon.current_state == state_moving:
+				cannon.global_position.x = grid_cursor.global_position.x
+				cannon.global_position.z = grid_cursor.global_position.z

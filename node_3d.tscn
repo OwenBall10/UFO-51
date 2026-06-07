@@ -1,54 +1,58 @@
-[gd_scene load_steps=9 format=3 uid="uid://ddtgtc7rr4t62"]
+[gd_scene load_steps=6 format=3 uid="uid://ddtgtc7rr4t62"]
 
 [ext_resource type="PackedScene" uid="uid://dmp2w2jguiyks" path="res://Scenes/cannon_root.tscn" id="1_a202f"]
 [ext_resource type="Script" uid="uid://b55j84c3ppand" path="res://Scripts/camera_script.gd" id="2_noarx"]
-[ext_resource type="PackedScene" uid="uid://lxmsj1xggrlv" path="res://Scenes/simple_enemy.tscn" id="3_a0tk4"]
 [ext_resource type="PackedScene" uid="uid://2nhgjx4d0hs0" path="res://Scenes/grid_cursor.tscn" id="4_r3fl7"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_noarx"]
-albedo_color = Color(0.20248899, 0.85591793, 0.36262015, 1)
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_a0tk4"]
-material = SubResource("StandardMaterial3D_noarx")
-size = Vector2(500, 500)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_r3fl7"]
-data = PackedVector3Array(250, 0, 250, -250, 0, 250, 250, 0, -250, -250, 0, 250, -250, 0, -250, 250, 0, -250)
 
 [sub_resource type="Environment" id="Environment_noarx"]
 background_mode = 1
 background_color = Color(0.6392157, 0.32156864, 0.78431374, 1)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3fl7"]
+albedo_color = Color(0.6431373, 0.5176471, 0, 1)
+
 [node name="Node3D" type="Node3D"]
 
-[node name="Floor" type="StaticBody3D" parent="."]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
-mesh = SubResource("PlaneMesh_a0tk4")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
-shape = SubResource("ConcavePolygonShape3D_r3fl7")
-
-[node name="TacticalCameraRig" type="Node3D" parent="." node_paths=PackedStringArray("grid_cursor", "cannon")]
+[node name="TacticalCameraRig" type="Node3D" parent="." node_paths=PackedStringArray("grid_cursor")]
 script = ExtResource("2_noarx")
 grid_cursor = NodePath("../GridCursor")
-cannon = NodePath("../CannonRoot")
 
 [node name="Camera3D" type="Camera3D" parent="TacticalCameraRig"]
 transform = Transform3D(1, 0, 0, 0, 0.80814415, 0.58898485, 0, -0.58898485, 0.80814415, 0, 11.331305, 11.17855)
 current = true
 
-[node name="CannonRoot" parent="." instance=ExtResource("1_a202f")]
-transform = Transform3D(0.783119, 0.5119591, 0.35301945, -0.05143272, 0.6190485, -0.7836668, -0.61974156, 0.59554756, 0.5111203, -0.32887417, 3.7939873, 0)
-aim_speed = 1.0
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_noarx")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.14223075, 0.97146237, 0.1898197, 0.34128058, -0.13188128, 0.93066376, 0.9291383, 0.19715074, -0.3127835, -27.465235, 40.532574, 25.427486)
-
-[node name="SimpleEnemy" parent="." instance=ExtResource("3_a0tk4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.357586, 5.1282825, -1.8300486)
+transform = Transform3D(-0.14223075, 0.97146225, 0.18981965, 0.34128058, -0.13188125, 0.9306637, 0.9291383, 0.19715075, -0.31278363, -27.465235, 87.662315, 25.427486)
 
 [node name="GridCursor" parent="." instance=ExtResource("4_r3fl7")]
+
+[node name="Tabletop" type="CSGBox3D" parent="."]
+use_collision = true
+size = Vector3(50, 1, 50)
+material = SubResource("StandardMaterial3D_r3fl7")
+
+[node name="CannonRoot" parent="." instance=ExtResource("1_a202f")]
+transform = Transform3D(0.23567125, -0.042561293, 0.07174672, 0.08251083, 0.15060179, -0.18168947, -0.01228898, 0.19495547, 0.15601712, -0.32887417, 1.5697894, 0)
+
+[node name="Floor" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -16.629307, 0)
+size = Vector3(120, 1, 120)
+
+[node name="Wall 1" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -58.644646, 0, 0)
+size = Vector3(1, 120, 120)
+
+[node name="Wall 2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58.422195, 0, 0)
+size = Vector3(1, 120, 120)
+
+[node name="Wall 3" type="CSGBox3D" parent="."]
+transform = Transform3D(0.00071562454, 0, -0.9999997, 0, 1, 0, 0.9999997, 0, 0.00071562454, 0.37610245, 0, -58.17943)
+size = Vector3(1, 120, 120)
+
+[node name="Wall 4" type="CSGBox3D" parent="."]
+transform = Transform3D(0.00071562454, 0, -0.9999997, 0, 1, 0, 0.9999997, 0, 0.00071562454, 0.37610245, 0, 59.878174)
+size = Vector3(1, 120, 120)
