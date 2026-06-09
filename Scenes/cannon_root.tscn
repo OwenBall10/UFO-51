@@ -1,8 +1,9 @@
-[gd_scene load_steps=18 format=4 uid="uid://dmp2w2jguiyks"]
+[gd_scene load_steps=19 format=4 uid="uid://dmp2w2jguiyks"]
 
 [ext_resource type="Script" uid="uid://cb1ahoqqyxxwi" path="res://Scripts/state_machine.gd" id="1_nxr0u"]
 [ext_resource type="PackedScene" uid="uid://o6gppevqmx4j" path="res://Scenes/cannonball.tscn" id="2_iogk1"]
 [ext_resource type="Texture2D" uid="uid://bn626036po7te" path="res://icon.svg" id="2_p7hkw"]
+[ext_resource type="Script" uid="uid://7q55detxfv2j" path="res://Scripts/target.gd" id="4_y3656"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iogk1"]
 albedo_color = Color(0.7485609, 0.44969624, 0.21432948, 1)
@@ -206,6 +207,9 @@ shape = SubResource("BoxShape3D_iogk1")
 
 [node name="CannonPOV" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2351742e-08, 1.9595673, -5.9604645e-08)
+
+[node name="TargetComponent" type="Node" parent="."]
+script = ExtResource("4_y3656")
 
 [connection signal="pressed" from="UI/AttackButton" to="." method="_on_attack_button_pressed"]
 [connection signal="input_event" from="SelectionArea" to="." method="_on_selection_area_input_event"]
