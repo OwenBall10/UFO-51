@@ -1,7 +1,6 @@
-extends RigidBody3D
+extends Target
 
-@export var max_health: float = 100.0
-var current_health: float
+
 
 # --- State Trackers --- 
 var is_invincible: bool = false

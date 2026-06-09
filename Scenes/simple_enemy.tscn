@@ -16,6 +16,7 @@ size = Vector3(10, 10, 10)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 script = ExtResource("1_fsxpk")
+max_health = null
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.9966791, 0, 0, 0, 1, 0, 0, 0)
