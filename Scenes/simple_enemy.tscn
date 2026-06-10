@@ -19,6 +19,7 @@ billboard = 1
 
 [node name="TargetComponent" type="Node" parent="."]
 script = ExtResource("2_w4d2u")
+max_health = 50.0
 
 [node name="Knight" parent="." instance=ExtResource("3_kcat3")]
 transform = Transform3D(0.125, 0, 0, 0, 0.125, 0, 0, 0, 0.125, 0, 0, 0)

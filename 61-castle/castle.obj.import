@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bf8af1rnjcutf"
+path="res://.godot/imported/castle.obj-a3fadd09b15e92f2523a8070620dce2d.mesh"
+
+[deps]
+
+files=["res://.godot/imported/castle.obj-a3fadd09b15e92f2523a8070620dce2d.mesh"]
+
+source_file="res://61-castle/castle.obj"
+dest_files=["res://.godot/imported/castle.obj-a3fadd09b15e92f2523a8070620dce2d.mesh", "res://.godot/imported/castle.obj-a3fadd09b15e92f2523a8070620dce2d.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

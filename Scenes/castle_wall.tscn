@@ -1,6 +1,5 @@
-[gd_scene load_steps=8 format=3 uid="uid://cykrmymym5ttx"]
+[gd_scene load_steps=7 format=3 uid="uid://cykrmymym5ttx"]
 
-[ext_resource type="Script" uid="uid://btgvog2aq67uo" path="res://Scripts/SimpleEnemy.gd" id="1_3gubg"]
 [ext_resource type="Texture2D" uid="uid://buoravsm4rtia" path="res://Textures/cobblestone_floor_09_diff_4k.jpg" id="2_vehwb"]
 [ext_resource type="Script" uid="uid://7q55detxfv2j" path="res://Scripts/target.gd" id="3_3p2tb"]
 
@@ -17,7 +16,7 @@ material = SubResource("StandardMaterial3D_8fm41")
 
 [node name="Castle Wall" type="RigidBody3D"]
 sleeping = true
-script = ExtResource("1_3gubg")
+freeze = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 material_override = SubResource("StandardMaterial3D_25pap")

@@ -2,11 +2,12 @@ extends Node3D
 
 # --- Weapon Stats ---
 @export var aim_speed: float = 2.0 
+@export var pre_aim_speed: float = 1.5  # How fast you rotate during free-aim
 @export var max_power: float = 50.0 
 @export var projectile_scene: PackedScene
 
 # --- State Machine ---
-enum CannonState { IDLE, AIM_HORIZONTAL, AIM_VERTICAL, POWER_SET, FIRED, MENU_OPEN, MOVING }
+enum CannonState { IDLE, PRE_AIM, AIM_HORIZONTAL, AIM_VERTICAL, POWER_SET, FIRED, MENU_OPEN, MOVING }
 var current_state: CannonState = CannonState.IDLE
 
 # --- Node References ---
@@ -46,10 +47,25 @@ func _process(delta: float) -> void:
 	match current_state:
 		CannonState.IDLE:
 			pass
+		CannonState.PRE_AIM:
+			# Free-aim: player lines up the cannon before the timing sequence.
+			# Left/Right arrows rotate horizontally, Up/Down tilt the barrel.
+			var h_input := Input.get_axis("ui_left", "ui_right")
+			var v_input := Input.get_axis("ui_down", "ui_up")
+			
+			current_horizontal_angle += h_input * pre_aim_speed * delta * -1.0
+			current_vertical_angle += v_input * pre_aim_speed * delta
+			
+			# Keep the starting point inside the same limits the sweep uses
+			current_horizontal_angle = clamp(current_horizontal_angle, deg_to_rad(-60.0), deg_to_rad(60.0))
+			current_vertical_angle = clamp(current_vertical_angle, 0.0, deg_to_rad(60.0))
+			
+			rotation.y = current_horizontal_angle
+			barrel_pivot.rotation.z = current_vertical_angle
+			
 		CannonState.AIM_HORIZONTAL:
 			
 			current_horizontal_angle += aim_speed * sweep_direction * delta
-			Camera.make_current()
 			
 			if abs(current_horizontal_angle) > deg_to_rad(60.0):
 				sweep_direction *= -1 # Flips between 1 and -1
@@ -84,6 +100,11 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
 		match current_state:
+			CannonState.PRE_AIM:
+				# Lock in the starting point and begin the timing sequence.
+				# The horizontal sweep continues from wherever the player aimed.
+				current_state = CannonState.AIM_HORIZONTAL
+				horiz_meter.show()
 			CannonState.AIM_HORIZONTAL:
 				current_state = CannonState.AIM_VERTICAL
 				vert_meter.show()
@@ -155,8 +176,7 @@ func _on_selection_area_input_event(camera: Node, event: InputEvent, event_posit
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if current_state == CannonState.IDLE:
 				pick_up()
-				# This line is CRITICAL: it stops the click from passing through 
-				# to the grass, so you don't instantly drop it in the same frame!
+				
 				get_viewport().set_input_as_handled() 
 				
 		# --- RIGHT CLICK: Open the Attack Menu ---
@@ -170,23 +190,23 @@ func _on_selection_area_input_event(camera: Node, event: InputEvent, event_posit
 func _on_attack_button_pressed() -> void:
 	if current_state == CannonState.MENU_OPEN:
 		attack_button.hide()
-		current_state = CannonState.AIM_HORIZONTAL
-		horiz_meter.show()
+		current_state = CannonState.PRE_AIM
 		crosshair.show()
+		Camera.make_current()
 
 
 func pick_up() -> void:
 	current_state = CannonState.MOVING
-	original_y = global_position.y # Remember the floor height
-	global_position.y += 0.5 # Lift the piece half a meter into the air
-	set_mesh_transparency(self, 0.6) # Make it 60% transparent
+	original_y = global_position.y 
+	global_position.y += 0.5 
+	set_mesh_transparency(self, 0.6) 
 
 func drop() -> void:
 	current_state = CannonState.IDLE
-	global_position.y = original_y # Snap back down to the board
-	set_mesh_transparency(self, 0.0) # Make it solid again
+	global_position.y = original_y
+	set_mesh_transparency(self, 0.0) 
 
-# This loops through your imported .glb to find the actual visual meshes
+
 func set_mesh_transparency(node: Node, alpha: float) -> void:
 	if node is MeshInstance3D:
 		node.transparency = alpha
