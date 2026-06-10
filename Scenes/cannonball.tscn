@@ -12,11 +12,13 @@ material = SubResource("StandardMaterial3D_alhse")
 
 [node name="Cannonball" type="RigidBody3D"]
 contact_monitor = true
-max_contacts_reported = 1
+max_contacts_reported = 4
 script = ExtResource("1_xx61p")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 mesh = SubResource("SphereMesh_alhse")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 shape = SubResource("SphereShape3D_xx61p")

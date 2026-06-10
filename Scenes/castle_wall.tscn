@@ -1,25 +1,25 @@
 [gd_scene load_steps=7 format=3 uid="uid://cykrmymym5ttx"]
 
+[ext_resource type="Script" uid="uid://bu4nc77ctley4" path="res://Scripts/Breakable_Blcok.gd" id="1_8fm41"]
 [ext_resource type="Texture2D" uid="uid://buoravsm4rtia" path="res://Textures/cobblestone_floor_09_diff_4k.jpg" id="2_vehwb"]
 [ext_resource type="Script" uid="uid://7q55detxfv2j" path="res://Scripts/target.gd" id="3_3p2tb"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_25pap"]
-albedo_texture = ExtResource("2_vehwb")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8fm41"]
 albedo_texture = ExtResource("2_vehwb")
 
 [sub_resource type="BoxMesh" id="BoxMesh_qvxiw"]
 material = SubResource("StandardMaterial3D_8fm41")
+size = Vector3(0.5, 0.5, 0.5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_djxxe"]
+size = Vector3(0.5, 0.5, 0.5)
 
 [node name="Castle Wall" type="RigidBody3D"]
 sleeping = true
 freeze = true
+script = ExtResource("1_8fm41")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-material_override = SubResource("StandardMaterial3D_25pap")
 mesh = SubResource("BoxMesh_qvxiw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
