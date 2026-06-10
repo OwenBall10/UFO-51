@@ -1,0 +1,369 @@
+[gd_scene load_steps=19 format=3 uid="uid://ddtgtc7rr4t62"]
+
+[ext_resource type="PackedScene" uid="uid://dmp2w2jguiyks" path="res://Scenes/cannon_root.tscn" id="1_a202f"]
+[ext_resource type="Script" uid="uid://b55j84c3ppand" path="res://Scripts/camera_script.gd" id="2_noarx"]
+[ext_resource type="Script" uid="uid://btgvog2aq67uo" path="res://Scripts/SimpleEnemy.gd" id="4_i5arm"]
+[ext_resource type="PackedScene" uid="uid://2nhgjx4d0hs0" path="res://Scenes/grid_cursor.tscn" id="4_r3fl7"]
+[ext_resource type="Script" uid="uid://7q55detxfv2j" path="res://Scripts/target.gd" id="5_wc5p8"]
+[ext_resource type="PackedScene" uid="uid://cutheduvfgbdi" path="res://Models/Knight.glb" id="6_jsk3o"]
+[ext_resource type="PackedScene" uid="uid://cykrmymym5ttx" path="res://Scenes/castle_wall.tscn" id="7_jsk3o"]
+[ext_resource type="Texture2D" uid="uid://buoravsm4rtia" path="res://Textures/cobblestone_floor_09_diff_4k.jpg" id="8_4arys"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3fl7"]
+albedo_color = Color(0.6431373, 0.5176471, 0, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_squl0"]
+radius = 0.4165039
+height = 1.5703125
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jka67"]
+albedo_color = Color(0.56078434, 0.94509804, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i5arm"]
+albedo_color = Color(0.5607859, 0.9458528, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wc5p8"]
+albedo_color = Color(0.56078434, 0.94509804, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jsk3o"]
+albedo_color = Color(0.56078434, 0.94509804, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8fm41"]
+albedo_texture = ExtResource("8_4arys")
+
+[sub_resource type="BoxMesh" id="BoxMesh_qvxiw"]
+material = SubResource("StandardMaterial3D_8fm41")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_djxxe"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6iypd"]
+radius = 0.4165039
+height = 1.5703125
+
+[node name="Node3D" type="Node3D"]
+
+[node name="TacticalCameraRig" type="Node3D" parent="." node_paths=PackedStringArray("grid_cursor")]
+script = ExtResource("2_noarx")
+grid_cursor = NodePath("../GridCursor")
+
+[node name="Camera3D" type="Camera3D" parent="TacticalCameraRig"]
+transform = Transform3D(1, 0, 0, 0, 0.7051418, 0.7090664, 0, -0.7090664, 0.7051418, 0, 11.331305, 11.17855)
+current = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.1942862, 0.9809307, 0.0052850726, -0.058860797, -0.017035846, 0.99812084, 0.97917736, 0.19361003, 0.06104819, -9.352831, 108.21327, -6.5909996)
+
+[node name="GridCursor" parent="." instance=ExtResource("4_r3fl7")]
+
+[node name="Tabletop" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13244605, -0.07838297, -0.11253548)
+use_collision = true
+size = Vector3(50, 1, 50)
+material = SubResource("StandardMaterial3D_r3fl7")
+
+[node name="CannonRoot" parent="." instance=ExtResource("1_a202f")]
+transform = Transform3D(0.23567125, -0.042561293, 0.07174672, 0.08251083, 0.15060179, -0.18168947, -0.01228898, 0.19495547, 0.15601712, -0.32887417, 1.5697894, 0)
+visible = false
+
+[node name="Floor" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1731987, -16.651909, -0.14607239)
+size = Vector3(120, 1, 120)
+
+[node name="SimpleEnemy" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.4832377, 0.50277376, 0)
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+script = ExtResource("4_i5arm")
+max_health = null
+
+[node name="HealthUI" type="Label3D" parent="SimpleEnemy"]
+transform = Transform3D(1.890161, 0, 0, 0, 1.6788425, 0, 0, 0, 2.1131284, 0, 6.976172, 0)
+billboard = 1
+
+[node name="TargetComponent" type="Node" parent="SimpleEnemy"]
+script = ExtResource("5_wc5p8")
+
+[node name="Knight" parent="SimpleEnemy" instance=ExtResource("6_jsk3o")]
+transform = Transform3D(0.125, 0, 0, 0, 0.125, 0, 0, 0, 0.125, 0, 0, -5.8238773)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SimpleEnemy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.551938, 0)
+shape = SubResource("CapsuleShape3D_squl0")
+
+[node name="Background Room" type="Node3D" parent="."]
+
+[node name="Wall 1" type="CSGBox3D" parent="Background Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -58.644646, 0, 0)
+size = Vector3(1, 120, 120)
+material = SubResource("StandardMaterial3D_jka67")
+
+[node name="Wall 2" type="CSGBox3D" parent="Background Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58.422195, 0, 0)
+size = Vector3(1, 120, 120)
+material = SubResource("StandardMaterial3D_i5arm")
+
+[node name="Wall 3" type="CSGBox3D" parent="Background Room"]
+transform = Transform3D(0.00071562454, 0, -0.9999997, 0, 1, 0, 0.9999997, 0, 0.00071562454, 0.37610245, 0, -58.17943)
+size = Vector3(1, 120, 120)
+material = SubResource("StandardMaterial3D_wc5p8")
+
+[node name="Wall 4" type="CSGBox3D" parent="Background Room"]
+transform = Transform3D(0.00071562454, 0, -0.9999997, 0, 1, 0, 0.9999997, 0, 0.00071562454, 0.37610245, 0, 59.878174)
+size = Vector3(1, 120, 120)
+material = SubResource("StandardMaterial3D_jsk3o")
+
+[node name="Castle" type="Node3D" parent="."]
+
+[node name="Left Tower" type="Node3D" parent="Castle"]
+
+[node name="Castle Wall" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.3523855, 1.4816766, 6.413121)
+max_health = null
+
+[node name="Castle Wall2" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.3711696, 1.4816766, 6.413121)
+max_health = null
+
+[node name="Castle Wall3" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.352696, 1.4816766, 7.423321)
+max_health = null
+
+[node name="Castle Wall4" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.364469, 1.4816766, 7.422971)
+max_health = null
+
+[node name="Castle Wall5" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.3523855, 2.4995413, 6.413121)
+max_health = null
+
+[node name="Castle Wall6" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.3711696, 2.4995413, 6.413121)
+max_health = null
+
+[node name="Castle Wall7" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.352696, 2.4995413, 7.423321)
+max_health = null
+
+[node name="Castle Wall8" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.364469, 2.4995413, 7.422971)
+max_health = null
+
+[node name="Castle Wall9" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.3523855, 3.529603, 6.413121)
+max_health = null
+
+[node name="Castle Wall10" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.3711696, 3.529603, 6.413121)
+max_health = null
+
+[node name="Castle Wall11" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.352696, 3.529603, 7.423321)
+max_health = null
+
+[node name="Castle Wall12" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.364469, 3.529603, 7.422971)
+max_health = null
+
+[node name="Castle Wall13" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.3523855, 4.5474677, 6.413121)
+max_health = null
+
+[node name="Castle Wall14" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.3711696, 4.5474677, 6.413121)
+max_health = null
+
+[node name="Castle Wall15" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.352696, 4.5474677, 7.423321)
+max_health = null
+
+[node name="Castle Wall16" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.364469, 4.5474677, 7.422971)
+max_health = null
+
+[node name="Castle Wall17" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.394604, 1.4816766, 6.413121)
+max_health = null
+
+[node name="Castle Wall18" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.413387, 1.4816766, 6.413121)
+max_health = null
+
+[node name="Castle Wall19" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.394915, 1.4816766, 7.423321)
+max_health = null
+
+[node name="Castle Wall20" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.406687, 1.4816766, 7.422971)
+max_health = null
+
+[node name="Castle Wall21" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.394604, 2.4995413, 6.413121)
+max_health = null
+
+[node name="Castle Wall22" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.413387, 2.4995413, 6.413121)
+max_health = null
+
+[node name="Castle Wall23" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.394915, 2.4995413, 7.423321)
+max_health = null
+
+[node name="Castle Wall24" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.406687, 2.4995413, 7.422971)
+max_health = null
+
+[node name="Castle Wall25" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.394604, 3.529603, 6.413121)
+max_health = null
+
+[node name="Castle Wall26" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.413387, 3.529603, 6.413121)
+max_health = null
+
+[node name="Castle Wall27" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.394915, 3.529603, 7.423321)
+max_health = null
+
+[node name="Castle Wall28" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.406687, 3.529603, 7.422971)
+max_health = null
+
+[node name="Castle Wall29" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.394604, 4.5474677, 6.413121)
+max_health = null
+
+[node name="Castle Wall30" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.413387, 4.5474677, 6.413121)
+max_health = null
+
+[node name="Castle Wall31" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.394915, 4.5474677, 7.423321)
+max_health = null
+
+[node name="Castle Wall32" parent="Castle/Left Tower" instance=ExtResource("7_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.406687, 4.5474677, 7.422971)
+max_health = null
+
+[node name="Castle Wall33" type="RigidBody3D" parent="Castle/Left Tower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.830808, 5.3524833, 6.0560656)
+script = ExtResource("4_i5arm")
+max_health = null
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Castle/Left Tower/Castle Wall33"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+mesh = SubResource("BoxMesh_qvxiw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Castle/Left Tower/Castle Wall33"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+shape = SubResource("BoxShape3D_djxxe")
+
+[node name="TargetComponent" type="Node" parent="Castle/Left Tower/Castle Wall33"]
+script = ExtResource("5_wc5p8")
+
+[node name="Castle Wall34" type="RigidBody3D" parent="Castle/Left Tower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.8631773, 5.3524833, 6.0560656)
+script = ExtResource("4_i5arm")
+max_health = null
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Castle/Left Tower/Castle Wall34"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+mesh = SubResource("BoxMesh_qvxiw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Castle/Left Tower/Castle Wall34"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+shape = SubResource("BoxShape3D_djxxe")
+
+[node name="TargetComponent" type="Node" parent="Castle/Left Tower/Castle Wall34"]
+script = ExtResource("5_wc5p8")
+
+[node name="Castle Wall35" type="RigidBody3D" parent="Castle/Left Tower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.780325, 5.3524833, 6.0560656)
+script = ExtResource("4_i5arm")
+max_health = null
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Castle/Left Tower/Castle Wall35"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+mesh = SubResource("BoxMesh_qvxiw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Castle/Left Tower/Castle Wall35"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+shape = SubResource("BoxShape3D_djxxe")
+
+[node name="TargetComponent" type="Node" parent="Castle/Left Tower/Castle Wall35"]
+script = ExtResource("5_wc5p8")
+
+[node name="Castle Wall36" type="RigidBody3D" parent="Castle/Left Tower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.78998, 5.3524833, 6.0560656)
+script = ExtResource("4_i5arm")
+max_health = null
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Castle/Left Tower/Castle Wall36"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+mesh = SubResource("BoxMesh_qvxiw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Castle/Left Tower/Castle Wall36"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+shape = SubResource("BoxShape3D_djxxe")
+
+[node name="TargetComponent" type="Node" parent="Castle/Left Tower/Castle Wall36"]
+script = ExtResource("5_wc5p8")
+
+[node name="Castle Wall37" type="RigidBody3D" parent="Castle/Left Tower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8744903, 5.3524833, 6.0560656)
+script = ExtResource("4_i5arm")
+max_health = null
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Castle/Left Tower/Castle Wall37"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+mesh = SubResource("BoxMesh_qvxiw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Castle/Left Tower/Castle Wall37"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+shape = SubResource("BoxShape3D_djxxe")
+
+[node name="TargetComponent" type="Node" parent="Castle/Left Tower/Castle Wall37"]
+script = ExtResource("5_wc5p8")
+
+[node name="Knight" type="RigidBody3D" parent="Castle"]
+transform = Transform3D(-0.99281174, 0, -0.11968644, 0, 1, 0, 0.11968644, 0, -0.99281174, 7.1475954, 5.0337777, 6.684721)
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+script = ExtResource("4_i5arm")
+max_health = null
+
+[node name="HealthUI" type="Label3D" parent="Castle/Knight"]
+transform = Transform3D(1.890161, 0, 0, 0, 1.6788425, 0, 0, 0, 2.1131284, 0, 6.976172, 0)
+billboard = 1
+
+[node name="TargetComponent" type="Node" parent="Castle/Knight"]
+script = ExtResource("5_wc5p8")
+team = 1
+
+[node name="Knight" parent="Castle/Knight" instance=ExtResource("6_jsk3o")]
+transform = Transform3D(0.125, 0, 0, 0, 0.125, 0, 0, 0, 0.125, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Castle/Knight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.551938, 0)
+shape = SubResource("CapsuleShape3D_6iypd")
+
+[node name="Knight2" type="RigidBody3D" parent="Castle"]
+transform = Transform3D(-0.99281174, 0, -0.11968644, 0, 1, 0, 0.11968644, 0, -0.99281174, 8.551577, 5.0337777, 6.684721)
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+script = ExtResource("4_i5arm")
+max_health = null
+
+[node name="HealthUI" type="Label3D" parent="Castle/Knight2"]
+transform = Transform3D(1.890161, 0, 0, 0, 1.6788425, 0, 0, 0, 2.1131284, 0, 6.976172, 0)
+billboard = 1
+
+[node name="TargetComponent" type="Node" parent="Castle/Knight2"]
+script = ExtResource("5_wc5p8")
+team = 1
+
+[node name="Knight" parent="Castle/Knight2" instance=ExtResource("6_jsk3o")]
+transform = Transform3D(0.125, 0, 0, 0, 0.125, 0, 0, 0, 0.125, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Castle/Knight2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.551938, 0)
+shape = SubResource("CapsuleShape3D_6iypd")

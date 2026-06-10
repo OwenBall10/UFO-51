@@ -1,31 +1,28 @@
 [gd_scene load_steps=5 format=3 uid="uid://lxmsj1xggrlv"]
 
 [ext_resource type="Script" uid="uid://btgvog2aq67uo" path="res://Scripts/SimpleEnemy.gd" id="1_fsxpk"]
+[ext_resource type="Script" uid="uid://7q55detxfv2j" path="res://Scripts/target.gd" id="2_w4d2u"]
+[ext_resource type="PackedScene" uid="uid://cutheduvfgbdi" path="res://Models/Knight.glb" id="3_kcat3"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_251rj"]
-albedo_color = Color(1, 1, 0.16470589, 1)
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_squl0"]
+radius = 0.4165039
+height = 1.5703125
 
-[sub_resource type="BoxMesh" id="BoxMesh_251rj"]
-material = SubResource("StandardMaterial3D_251rj")
-size = Vector3(2.5, 2.5, 2.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_fsxpk"]
-size = Vector3(10, 10, 10)
-
-[node name="SimpleEnemy" type="RigidBody3D"]
+[node name="Knight" type="RigidBody3D"]
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 script = ExtResource("1_fsxpk")
-max_health = null
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.9966791, 0, 0, 0, 1, 0, 0, 0)
-mesh = SubResource("BoxMesh_251rj")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
-shape = SubResource("BoxShape3D_fsxpk")
 
 [node name="HealthUI" type="Label3D" parent="."]
 transform = Transform3D(1.890161, 0, 0, 0, 1.6788425, 0, 0, 0, 2.1131284, 0, 6.976172, 0)
 billboard = 1
+
+[node name="TargetComponent" type="Node" parent="."]
+script = ExtResource("2_w4d2u")
+
+[node name="Knight" parent="." instance=ExtResource("3_kcat3")]
+transform = Transform3D(0.125, 0, 0, 0, 0.125, 0, 0, 0, 0.125, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.551938, 0)
+shape = SubResource("CapsuleShape3D_squl0")
