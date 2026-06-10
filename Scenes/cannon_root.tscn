@@ -1,12 +1,9 @@
-[gd_scene load_steps=19 format=4 uid="uid://dmp2w2jguiyks"]
+[gd_scene load_steps=16 format=4 uid="uid://dmp2w2jguiyks"]
 
 [ext_resource type="Script" uid="uid://cb1ahoqqyxxwi" path="res://Scripts/state_machine.gd" id="1_nxr0u"]
 [ext_resource type="PackedScene" uid="uid://o6gppevqmx4j" path="res://Scenes/cannonball.tscn" id="2_iogk1"]
 [ext_resource type="Texture2D" uid="uid://bn626036po7te" path="res://icon.svg" id="2_p7hkw"]
 [ext_resource type="Script" uid="uid://7q55detxfv2j" path="res://Scripts/target.gd" id="4_y3656"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iogk1"]
-albedo_color = Color(0.7485609, 0.44969624, 0.21432948, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kq3o8"]
 
@@ -26,9 +23,6 @@ _surfaces = [{
 "vertex_data": PackedByteArray("/38AAAAA//uJ/f//Bmf/y/9///8AAP/7//8AAP9//7v4mP//if3/gwNPAABA9v+LAAD///9//7v/fwAAAAD/+/9///8AAP/7/3///wAA/7/4mP//if3/vwAA////f/+/if3//wZn/7//fwAAAAD/PwNPAABA9v8///8AAP9//z+J/QAABmf/y///////f/+7QPYAAPuw/6v4mAAAif3/g5IV//8cx/+jAAAAAP9//7t1Av//Bmf/y3UCAAAGZ//LdQL//wZn/7+SFf//HMf/v///////f/+/if0AAAZn/z/4mAAAif3/P0D2AAD7sP8/AAAAAP9//z91AgAABmf/P/iY//91Av/7+JgAAHUC//uB2gAAfSX+42zq//8cx/+j/3///////4N9JQAAfSX+4wZn//91Av/7BmcAAHUC//v4mP//dQL/vwZn//91Av+//3///////79s6v//HMf/vwZnAAB1Av8/+JgAAHUC/z+B2gAAfSX/P30lAAB9Jf8/+7AAAL4J/vMcx///khX+62zq///iOP/bQPYAAANP/9OJ/f//+Jj/s4HaAACB2v+bHMf//2zq/5P7sAAAQPb/i/9/AAD///+DBmf//4n9/4PiOP//bOr/k30lAACB2v+bvgkAAPuw/6t1Av//+Jj/s74JAAADT//TkhX//+I4/9viOP//khX+6+I4AACSFf7rA08AAL4J/vPiOP//khX/v5IV///iOP+/bOr//+I4/78cx///khX/v4n9///4mP+/Bmf//4n9/791Av//+Jj/v+I4//9s6v+/HMf//2zq/7/7sAAAvgn/P0D2AAADT/8/gdoAAIHa/z/7sAAAQPb/P/9/AAD///8/fSUAAIHa/z++CQAA+7D/P74JAAADT/8/4jgAAJIV/z8DTwAAvgn/P/iYAAB1Av7z+7D//74J/vP4mP//dQL+8/uwAAC+Cf7r+7D//74J/uscxwAAkhX+6xzHAACSFf7jgdr//30l/uMcx///khX+44HaAAB9Jf/bgdr//30l/9ts6gAA4jj/22zqAADiOP/TQPb//wNP/9Ns6v//4jj/00D2AAADT//LQPb//wNP/8uJ/QAABmf/w///////f//Dif3//wZn/8P//wAA/3//w4n9///4mP+7if0AAPiY/7uJ/QAA+Jj/s0D2///7sP+zQPYAAPuw/7Ns6v//HMf/q0D2///7sP+rbOoAABzH/6ts6gAAHMf/o4Ha//+B2v+jgdoAAIHa/6Mcx///bOr/m4Ha//+B2v+bHMcAAGzq/5scxwAAbOr/k/uw//9A9v+T+7AAAED2/5P4mP//if3/i/uw//9A9v+L+JgAAIn9/4v/fwAA////g/9///////+DBmcAAIn9/4MGZwAAif3/iwNP//9A9v+LBmf//4n9/4sDTwAAQPb/kwNP//9A9v+T4jgAAGzq/5PiOAAAbOr/m30l//+B2v+b4jj//2zq/5t9JQAAgdr/o30l//+B2v+jkhUAABzH/6OSFQAAHMf/q74J///7sP+rkhX//xzH/6u+CQAA+7D/s74J///7sP+zdQIAAPiY/7N1AgAA+Jj/u3UC///4mP+7AAAAAP9//8N1Av//Bmf/wwAA////f//DdQIAAAZn/8O+Cf//A0//y74JAAADT//LkhX//+I4/9O+Cf//A0//05IVAADiOP/TkhUAAOI4/9t9Jf//fSX/230lAAB9Jf/b4jj//5IV/uN9Jf//fSX+4+I4AACSFf7jA0///74J/usDTwAAvgn+6/uw//++Cf+/A0///74J/799Jf//fSX/v74J//8DT/+/vgn///uw/78DT///QPb/v30l//+B2v+/+7D//0D2/79A9v//+7D/v4Ha//+B2v+/gdr//30l/79A9v//A0//vwZn//91Av7zA0///74J/vMGZwAAdQL+8xzHAACSFf8/bOoAAOI4/z+J/QAA+Jj/P2zqAAAcx/8/HMcAAGzq/z8GZwAAif3/P+I4AABs6v8/dQIAAPiY/z+SFQAAHMf/P5IVAADiOP8//38AAP9/AAD/fwAA/38AAP9/AAD/f////3////9/////f///////f/7//3////9//v//fwAA/38AAP9/AAD/f/9/AAD/fwAA/38AAP9/AAD/f////3////9/////f////v//f/7//3////9/AAD/fwAA/38AAP9/AAD/fwAA/3//fwAA/38AAP9/AAD/fwAA/38AAP9/////f////3////7//3/+//9/////f/7//38AAP9/AAD/fwAA/38AAP9//38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/3////9/////f////3////9/////f////3////9/////f////3////7//3/+//9//v//f/7//3/+//9//v//f/7//3/+//9//v//fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/3//fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9///////9/////f/7//3/+//9/////f////3/+//9/////f/7//3/+//9//v//f////3//f////3////9///8AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/")
 }]
 blend_shape_mode = 0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y3656"]
-albedo_color = Color(0.7490196, 0.4509804, 0.21568628, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_67jrf"]
 
@@ -63,11 +57,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_y3656")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vsihg"]
-albedo_color = Color(0.26666668, 1, 1, 1)
-metallic = 1.0
-roughness = 0.35
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_75f4j"]
 
@@ -113,20 +102,18 @@ gradient = SubResource("Gradient_nxr0u")
 [sub_resource type="BoxShape3D" id="BoxShape3D_iogk1"]
 size = Vector3(6, 6, 6)
 
-[node name="CannonRoot" type="Node3D"]
+[node name="CannonRoot" type="Node3D" groups=["Cannons"]]
 transform = Transform3D(0.23567125, -0.042561293, 0.07174672, 0.08251083, 0.15060179, -0.18168947, -0.01228898, 0.19495547, 0.15601712, -0.32887417, 0, 0)
 script = ExtResource("1_nxr0u")
 projectile_scene = ExtResource("2_iogk1")
 
 [node name="CannonWheel_Left" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.0683164, -0.6536716, 0, 0.05900868, 0.75677836, -2.8462377, -1.6940705, 0.6494012)
-material_override = SubResource("StandardMaterial3D_iogk1")
 mesh = SubResource("ArrayMesh_kf76a")
 skeleton = NodePath("")
 
 [node name="CannonWheel_Right" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.0683164, -0.6536716, 0, 0.05900868, 0.75677836, -2.8462377, 0.35177997, 2.3913746)
-material_override = SubResource("StandardMaterial3D_y3656")
 mesh = SubResource("ArrayMesh_hpl8p")
 skeleton = NodePath("")
 
@@ -135,7 +122,6 @@ transform = Transform3D(1, 0, 0, 0, 0.6536716, 0.75677836, 0, -0.75677836, 0.653
 
 [node name="CannonMesh_Barrel" type="MeshInstance3D" parent="CannonBarrelPivot"]
 transform = Transform3D(0, 3.571569, 0, 0.55200976, 0, 0.8338378, 0.8338378, 0, -0.55200976, 0, 0, 0)
-material_override = SubResource("StandardMaterial3D_vsihg")
 mesh = SubResource("ArrayMesh_v0d4s")
 skeleton = NodePath("")
 
@@ -202,7 +188,7 @@ Cannon
 [node name="SelectionArea" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SelectionArea"]
-transform = Transform3D(1, -2.2351742e-08, -8.009374e-08, 3.7252903e-09, 1.0000129, 1.1622906e-06, -3.7252903e-09, -1.5795231e-06, 1.0000002, 0.5291139, 1.1175871e-08, 7.450581e-09)
+transform = Transform3D(1, -3.725296e-09, 3.7252808e-09, 3.7252903e-09, 1, 1.5795027e-06, -3.7252865e-09, -1.5795027e-06, 1, 0.5291139, 1.1175871e-08, 7.450581e-09)
 shape = SubResource("BoxShape3D_iogk1")
 
 [node name="CannonPOV" type="Camera3D" parent="."]

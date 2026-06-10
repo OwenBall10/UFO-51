@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgcii5jnwb5y7"]
+
+[ext_resource type="Script" uid="uid://n557a6ed3a3j" path="res://Scripts/Terminal.gd" id="1_n6a66"]
+
+[node name="InGameTerminal" type="CanvasLayer"]
+script = ExtResource("1_n6a66")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 225.0
+offset_bottom = 153.0
+color = Color(0, 0, 0, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ColorRect"]
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 151.0
+scroll_following = true
+scroll_following_visible_characters = true

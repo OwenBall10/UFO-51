@@ -1,7 +1,6 @@
-[gd_scene load_steps=51 format=4 uid="uid://ddtgtc7rr4t62"]
+[gd_scene load_steps=50 format=4 uid="uid://ddtgtc7rr4t62"]
 
 [ext_resource type="Script" uid="uid://b55j84c3ppand" path="res://Scripts/camera_script.gd" id="2_noarx"]
-[ext_resource type="Script" uid="uid://btgvog2aq67uo" path="res://Scripts/SimpleEnemy.gd" id="4_i5arm"]
 [ext_resource type="PackedScene" uid="uid://2nhgjx4d0hs0" path="res://Scenes/grid_cursor.tscn" id="4_r3fl7"]
 [ext_resource type="Script" uid="uid://bu4nc77ctley4" path="res://Scripts/Breakable_Blcok.gd" id="5_imku0"]
 [ext_resource type="Script" uid="uid://7q55detxfv2j" path="res://Scripts/target.gd" id="5_wc5p8"]
@@ -490,11 +489,11 @@ script = ExtResource("5_wc5p8")
 
 [node name="Knights" type="Node3D" parent="Castle"]
 
-[node name="Knight" type="RigidBody3D" parent="Castle/Knights"]
+[node name="Knight" type="RigidBody3D" parent="Castle/Knights" groups=["Soldiers"]]
 transform = Transform3D(-0.99281174, 0, -0.11968644, 0, 1, 0, 0.11968644, 0, -0.99281174, 3.5737977, 2.2825253, 5.145575)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
-script = ExtResource("4_i5arm")
+script = ExtResource("11_wlxy5")
 
 [node name="HealthUI" type="Label3D" parent="Castle/Knights/Knight"]
 transform = Transform3D(0.9450805, 0, 0, 0, 0.8394213, 0, 0, 0, 1.0565642, 0, 3.488086, 0)
@@ -511,11 +510,11 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0.25466013, 0)
 transform = Transform3D(0.4, 0, -3.7252903e-09, 0, 0.4, 0, 3.7252903e-09, 0, 0.4, 0, 0.45613313, 0)
 shape = SubResource("CapsuleShape3D_6iypd")
 
-[node name="Knight2" type="RigidBody3D" parent="Castle/Knights"]
+[node name="Knight2" type="RigidBody3D" parent="Castle/Knights" groups=["Soldiers"]]
 transform = Transform3D(-0.99281174, 0, -0.11968644, 0, 1, 0, 0.11968644, 0, -0.99281174, 4.2757883, 2.3077962, 5.1695747)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
-script = ExtResource("4_i5arm")
+script = ExtResource("11_wlxy5")
 
 [node name="HealthUI" type="Label3D" parent="Castle/Knights/Knight2"]
 transform = Transform3D(0.9450805, 0, 0, 0, 0.8394213, 0, 0, 0, 1.0565642, 0, 3.488086, 0)
@@ -532,11 +531,11 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0.25850677, 0)
 transform = Transform3D(0.4, 0, -3.7252903e-09, 0, 0.4, 0, 3.7252903e-09, 0, 0.4, 0, 0.46415114, 0)
 shape = SubResource("CapsuleShape3D_6iypd")
 
-[node name="Knight3" type="RigidBody3D" parent="Castle/Knights"]
+[node name="Knight3" type="RigidBody3D" parent="Castle/Knights" groups=["Soldiers"]]
 transform = Transform3D(-0.9999816, 0, -0.006073788, 0, 1, 0, 0.006073788, 0, -0.9999816, -0.53294754, 2.71643, 5.245162)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
-script = ExtResource("4_i5arm")
+script = ExtResource("11_wlxy5")
 
 [node name="HealthUI" type="Label3D" parent="Castle/Knights/Knight3"]
 transform = Transform3D(0.9450805, 0, 0, 0, 0.8394213, 0, 0, 0, 1.0565642, 0, 3.488086, 0)
@@ -553,11 +552,11 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0.08862114, 0)
 transform = Transform3D(0.40000004, 0, 0, 0, 0.4, 0, 0, 0, 0.40000004, 0, 0.3140185, 0)
 shape = SubResource("CapsuleShape3D_squl0")
 
-[node name="Knight4" type="RigidBody3D" parent="Castle/Knights"]
+[node name="Knight4" type="RigidBody3D" parent="Castle/Knights" groups=["Soldiers"]]
 transform = Transform3D(-0.9999816, 0, -0.006073788, 0, 1, 0, 0.006073788, 0, -0.9999816, -1.7764931, 2.8312643, 5.245162)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
-script = ExtResource("4_i5arm")
+script = ExtResource("11_wlxy5")
 
 [node name="HealthUI" type="Label3D" parent="Castle/Knights/Knight4"]
 transform = Transform3D(0.9450805, 0, 0, 0, 0.8394213, 0, 0, 0, 1.0565642, 0, 3.488086, 0)
@@ -574,11 +573,11 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
 transform = Transform3D(0.40000004, 0, 0, 0, 0.4, 0, 0, 0, 0.40000004, 0, 0.2112329, 0)
 shape = SubResource("CapsuleShape3D_squl0")
 
-[node name="Knight5" type="RigidBody3D" parent="Castle/Knights"]
+[node name="Knight5" type="RigidBody3D" parent="Castle/Knights" groups=["Soldiers"]]
 transform = Transform3D(-0.99281174, 0, -0.11968644, 0, 1, 0, 0.11968644, 0, -0.99281174, -5.694352, 2.2825253, 5.145575)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
-script = ExtResource("4_i5arm")
+script = ExtResource("11_wlxy5")
 
 [node name="HealthUI" type="Label3D" parent="Castle/Knights/Knight5"]
 transform = Transform3D(0.9450805, 0, 0, 0, 0.8394213, 0, 0, 0, 1.0565642, 0, 3.488086, 0)
@@ -595,11 +594,11 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
 transform = Transform3D(0.4, 0, -3.7252903e-09, 0, 0.4, 0, 3.7252903e-09, 0, 0.4, 0, 0.23782372, 0)
 shape = SubResource("CapsuleShape3D_6iypd")
 
-[node name="Knight6" type="RigidBody3D" parent="Castle/Knights"]
+[node name="Knight6" type="RigidBody3D" parent="Castle/Knights" groups=["Soldiers"]]
 transform = Transform3D(-0.99281174, 0, -0.11968644, 0, 1, 0, 0.11968644, 0, -0.99281174, -6.9319134, 2.2825253, 5.145575)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
-script = ExtResource("4_i5arm")
+script = ExtResource("11_wlxy5")
 
 [node name="HealthUI" type="Label3D" parent="Castle/Knights/Knight6"]
 transform = Transform3D(0.9450805, 0, 0, 0, 0.8394213, 0, 0, 0, 1.0565642, 0, 3.488086, 0)
@@ -616,11 +615,11 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
 transform = Transform3D(0.4, 0, -3.7252903e-09, 0, 0.4, 0, 3.7252903e-09, 0, 0.4, 0, 0.22500014, 0)
 shape = SubResource("CapsuleShape3D_6iypd")
 
-[node name="Knight7" type="RigidBody3D" parent="Castle/Knights"]
+[node name="Knight7" type="RigidBody3D" parent="Castle/Knights" groups=["Soldiers"]]
 transform = Transform3D(-0.99281174, 0, -0.11968644, 0, 1, 0, 0.11968644, 0, -0.99281174, -4.4237986, 0.6280818, 7.7478724)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
-script = ExtResource("4_i5arm")
+script = ExtResource("11_wlxy5")
 
 [node name="HealthUI" type="Label3D" parent="Castle/Knights/Knight7"]
 transform = Transform3D(0.9450805, 0, 0, 0, 0.8394213, 0, 0, 0, 1.0565642, 0, 3.488086, 0)
@@ -637,11 +636,12 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -0.11199713, 0, -0.0
 transform = Transform3D(0.4, 0, -7.450581e-09, 0, 0.4, 0, 7.450581e-09, 0, 0.4, -0.11797047, 0.20989108, -0.014222145)
 shape = SubResource("CapsuleShape3D_6iypd")
 
-[node name="Knight8" type="RigidBody3D" parent="Castle/Knights"]
+[node name="Knight8" type="RigidBody3D" parent="Castle/Knights" groups=["Soldiers"]]
 transform = Transform3D(-0.99281174, 0, -0.11968644, 0, 1, 0, 0.11968644, 0, -0.99281174, -1.2726173, 0.8773422, 9.115143)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
-script = ExtResource("4_i5arm")
+script = ExtResource("11_wlxy5")
+is_general = true
 
 [node name="HealthUI" type="Label3D" parent="Castle/Knights/Knight8"]
 transform = Transform3D(0.9450805, 0, 0, 0, 0.8394213, 0, 0, 0, 1.0565642, 0, 3.488086, 0)
@@ -1423,7 +1423,7 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.3019743, 0)
 
 [node name="Army" type="Node3D" parent="."]
 
-[node name="Knight" type="RigidBody3D" parent="Army"]
+[node name="Knight" type="RigidBody3D" parent="Army" groups=["Soldiers"]]
 transform = Transform3D(0.007941164, 0, 0.9999685, 0, 1, 0, -0.9999685, 0, 0.007941164, -10.3617, 1.3044473, -4.290493)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
@@ -1444,7 +1444,7 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
 transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0.287246, 0)
 shape = SubResource("CapsuleShape3D_squl0")
 
-[node name="Knight2" type="RigidBody3D" parent="Army"]
+[node name="Knight2" type="RigidBody3D" parent="Army" groups=["Soldiers"]]
 transform = Transform3D(0.007941164, 0, 0.9999685, 0, 1, 0, -0.9999685, 0, 0.007941164, -10.3617, 1.3044473, -2.3000438)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
@@ -1465,7 +1465,7 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
 transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0.287246, 0)
 shape = SubResource("CapsuleShape3D_squl0")
 
-[node name="Knight3" type="RigidBody3D" parent="Army"]
+[node name="Knight3" type="RigidBody3D" parent="Army" groups=["Soldiers"]]
 transform = Transform3D(0.007941164, 0, 0.9999685, 0, 1, 0, -0.9999685, 0, 0.007941164, -11.025741, 1.3044473, -4.290493)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
@@ -1486,7 +1486,7 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
 transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0.287246, 0)
 shape = SubResource("CapsuleShape3D_squl0")
 
-[node name="Knight4" type="RigidBody3D" parent="Army"]
+[node name="Knight4" type="RigidBody3D" parent="Army" groups=["Soldiers"]]
 transform = Transform3D(0.007941164, 0, 0.9999685, 0, 1, 0, -0.9999685, 0, 0.007941164, -11.025741, 1.3044473, -2.3613026)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
@@ -1507,7 +1507,7 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
 transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0.287246, 0)
 shape = SubResource("CapsuleShape3D_squl0")
 
-[node name="Knight5" type="RigidBody3D" parent="Army"]
+[node name="Knight5" type="RigidBody3D" parent="Army" groups=["Soldiers"]]
 transform = Transform3D(0.007941164, 0, 0.9999685, 0, 1, 0, -0.9999685, 0, 0.007941164, -9.500008, 1.3044473, -3.2881722)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
@@ -1528,11 +1528,12 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
 transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0.287246, 0)
 shape = SubResource("CapsuleShape3D_squl0")
 
-[node name="Knight6" type="RigidBody3D" parent="Army"]
+[node name="Knight6" type="RigidBody3D" parent="Army" groups=["Soldiers"]]
 transform = Transform3D(0.007941164, 0, 0.9999685, 0, 1, 0, -0.9999685, 0, 0.007941164, -10.872032, 1.3044473, -3.2881722)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 script = ExtResource("11_wlxy5")
+is_general = true
 
 [node name="HealthUI" type="Label3D" parent="Army/Knight6"]
 transform = Transform3D(1.890161, 0, 0, 0, 1.6788425, 0, 0, 0, 2.1131284, 0, 6.976172, 0)
@@ -1549,7 +1550,7 @@ transform = Transform3D(0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0)
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0.287246, 0)
 shape = SubResource("CapsuleShape3D_squl0")
 
-[node name="CannonRoot" type="Node3D" parent="Army" node_paths=PackedStringArray("attack_button")]
+[node name="CannonRoot" type="Node3D" parent="Army" node_paths=PackedStringArray("attack_button") groups=["Cannons"]]
 transform = Transform3D(0.032785024, -0.07951239, -0.05101884, 0.03300434, 0.060240712, -0.07267579, 0.08852037, 0.006988344, 0.04599247, -12.319627, 1.7209682, -3.2694726)
 script = ExtResource("10_cdqbm")
 projectile_scene = ExtResource("11_imku0")
@@ -1648,7 +1649,7 @@ shape = SubResource("BoxShape3D_nu31w")
 script = ExtResource("5_wc5p8")
 team = 2
 
-[node name="CannonRoot2" type="Node3D" parent="Army" node_paths=PackedStringArray("attack_button")]
+[node name="CannonRoot2" type="Node3D" parent="Army" node_paths=PackedStringArray("attack_button") groups=["Cannons"]]
 transform = Transform3D(0.09431719, -0.017887712, 0.028005317, 0.033004336, 0.060240716, -0.07267579, -0.0038705636, 0.077788725, 0.062721066, -12.319627, 1.7209682, -1.8238487)
 script = ExtResource("10_cdqbm")
 projectile_scene = ExtResource("11_imku0")
@@ -1745,8 +1746,8 @@ shape = SubResource("BoxShape3D_nu31w")
 script = ExtResource("5_wc5p8")
 team = 2
 
-[node name="CannonRoot" type="Node3D" parent="." node_paths=PackedStringArray("attack_button")]
-transform = Transform3D(-0.019084278, 0.07965821, 0.057361644, 0.033004325, 0.060240705, -0.0726758, -0.0924473, 0.0050621717, -0.03778716, 8.008229, 4.1008425, 7.3846993)
+[node name="CannonRoot" type="Node3D" parent="." node_paths=PackedStringArray("attack_button") groups=["Cannons"]]
+transform = Transform3D(-0.01908428, 0.07965821, 0.057361655, -0.029436335, 0.051102236, -0.08075927, -0.0936445, -0.032297496, 0.013695971, 8.008229, 4.1008425, 7.3846993)
 script = ExtResource("10_cdqbm")
 projectile_scene = ExtResource("11_imku0")
 attack_button = NodePath("UI/AttackButton2")
@@ -1841,8 +1842,8 @@ shape = SubResource("BoxShape3D_iogk1")
 script = ExtResource("5_wc5p8")
 team = 1
 
-[node name="CannonRoot2" type="Node3D" parent="." node_paths=PackedStringArray("attack_button")]
-transform = Transform3D(-0.0743601, 0.064017795, 0.019294903, 0.033004325, 0.060240697, -0.072675794, -0.05814884, -0.047673646, -0.065923706, 12.08865, 1.6601849, 5.4245524)
+[node name="CannonRoot2" type="Node3D" parent="." node_paths=PackedStringArray("attack_button") groups=["Cannons"]]
+transform = Transform3D(-0.08086247, 0.042775374, 0.040392157, -0.0026359856, 0.06595308, -0.07512152, -0.05877339, -0.061809868, -0.052203752, 12.08865, 1.6601849, 5.4245524)
 script = ExtResource("10_cdqbm")
 projectile_scene = ExtResource("11_imku0")
 attack_button = NodePath("UI/AttackButton3")
@@ -1937,7 +1938,7 @@ shape = SubResource("BoxShape3D_iogk1")
 script = ExtResource("5_wc5p8")
 team = 1
 
-[node name="CannonRoot3" type="Node3D" parent="." node_paths=PackedStringArray("attack_button")]
+[node name="CannonRoot3" type="Node3D" parent="." node_paths=PackedStringArray("attack_button") groups=["Cannons"]]
 transform = Transform3D(-0.086521335, 0.011643471, 0.04876974, -0.032122847, 0.061811678, -0.071745634, -0.038499087, -0.07774148, -0.049740106, 2.093618, 3.4655132, 10.050858)
 script = ExtResource("10_cdqbm")
 projectile_scene = ExtResource("11_imku0")

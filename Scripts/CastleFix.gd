@@ -2,7 +2,7 @@
 extends EditorScript
 
 
-const CONTAINER_PATH := "Castle"  # path relative to the scene root
+const CONTAINER_PATH := "Castle"  
 
 func _run() -> void:
 	var root := get_scene()
@@ -39,7 +39,7 @@ func _bake(node: Node, f: float, scene_root: Node, counts: Dictionary) -> void:
 		if not (child is Node3D):
 			continue
 
-		# Same world position, expressed without the parent scale.
+		
 		child.position *= f
 		counts["moved"] += 1
 
@@ -56,7 +56,6 @@ func _bake(node: Node, f: float, scene_root: Node, counts: Dictionary) -> void:
 			counts["resized"] += 1
 		elif child is MeshInstance3D or child is CollisionShape3D \
 				or child is Label3D or child is CSGShape3D:
-			# Leaf visuals / shapes built directly in this scene.
 			child.scale *= f
 			counts["resized"] += 1
 			_bake(child, f, scene_root, counts)

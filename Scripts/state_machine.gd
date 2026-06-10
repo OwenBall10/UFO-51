@@ -2,11 +2,10 @@ extends Node3D
 
 # --- Weapon Stats ---
 @export var aim_speed: float = 2.0 
-@export var pre_aim_speed: float = 1.5  # How fast you rotate during free-aim
-@export var move_rotation_speed: float = 3.0  # How fast the cannon rotates while being moved
+@export var pre_aim_speed: float = 1.5  
+@export var move_rotation_speed: float = 3.0  
 @export var max_power: float = 50.0 
 @export var projectile_scene: PackedScene
-## Size of each grid tile in world units. Must match your grid system.
 @export var tile_size: float = 2.0
 
 # --- State Machine ---
@@ -22,7 +21,7 @@ var current_state: CannonState = CannonState.IDLE
 @onready var horiz_ticker = $UI/HorizontalMeter/HorizTicker
 @onready var vert_meter = $UI/VerticalMeter
 @onready var vert_ticker = $UI/VerticalMeter/VertTicker
-@export var attack_button: Button  # Assign per-instance in the inspector
+@export var attack_button: Button  
 @onready var Camera = $CannonBarrelPivot/Camera3D
 
 # --- Sweeping Variables --- 
@@ -35,6 +34,10 @@ var power_direction: int = 1
  
 # --- Extra --- 
 var original_y: float = 0.0
+var base_y_rotation: float = 0.0
+
+@onready var target = $TargetComponent
+var original_grid_pos: Vector3 = Vector3.ZERO
 
 func _ready() -> void:
 	power_bar.max_value = max_power
@@ -52,7 +55,6 @@ func _process(delta: float) -> void:
 		CannonState.IDLE:
 			pass
 		CannonState.MOVING:
-			# Handle rotation with A/D keys (specific keys, not ui_left/ui_right which camera uses).
 			var rotation_input := 0.0
 			if Input.is_key_pressed(KEY_A):
 				rotation_input -= 1.0
@@ -60,50 +62,60 @@ func _process(delta: float) -> void:
 				rotation_input += 1.0
 			rotation.y += rotation_input * move_rotation_speed * delta
 			
-			# Follow the mouse in world space, staying at raised height, snapped to grid.
 			var mouse_pos = get_viewport().get_mouse_position()
 			var camera = get_viewport().get_camera_3d()
 			
-			# Cast a ray from the camera through the mouse position to ground level (y=0).
 			var ray_origin = camera.project_ray_origin(mouse_pos)
 			var ray_dir = camera.project_ray_normal(mouse_pos)
 			
-			# Solve for t where ray_origin.y + t * ray_dir.y = original_y (the raised height).
 			if not is_zero_approx(ray_dir.y):
 				var t = (original_y - ray_origin.y) / ray_dir.y
 				var target_pos = ray_origin + ray_dir * t
 				
-				# Snap to grid for placement.
+				
 				var snapped = snap_to_grid(target_pos)
-				global_position.x = snapped.x
-				global_position.z = snapped.z
-				# y stays at original_y (the raised position)
+				
+				if target:
+					if target.team == TargetComponent.Team.RED:
+						snapped.x = original_grid_pos.x
+						snapped.z = original_grid_pos.z
+				
+					elif target.team == TargetComponent.Team.BLUE:
+						snapped.x = max(snapped.x, original_grid_pos.x)
+						snapped.z = max(snapped.z, original_grid_pos.z)
+				
+						var steps_x = int(round((snapped.x - original_grid_pos.x) / tile_size))
+						var steps_z = int(round((snapped.z - original_grid_pos.z) / tile_size))
+						var total_steps = steps_x + steps_z
+				
+						if total_steps > GameManager.blue_ap:
+							snapped.x = original_grid_pos.x
+							snapped.z = original_grid_pos.z
+						global_position.x = snapped.x
+						global_position.z = snapped.z
+				
 			
 		CannonState.PRE_AIM:
-			# Free-aim: player lines up the cannon before the timing sequence.
-			# Left/Right arrows rotate horizontally, Up/Down tilt the barrel.
 			var h_input := Input.get_axis("ui_left", "ui_right")
 			var v_input := Input.get_axis("ui_down", "ui_up")
 			
 			current_horizontal_angle += h_input * pre_aim_speed * delta * -1.0
 			current_vertical_angle += v_input * pre_aim_speed * delta
 			
-			# Clamp only vertical (elevation) to reasonable bounds.
-			# Let horizontal angle be free so the sweep can handle limits.
+			current_horizontal_angle = clamp(current_horizontal_angle, -deg_to_rad(60.0), deg_to_rad(60.0))
 			current_vertical_angle = clamp(current_vertical_angle, 0.0, deg_to_rad(60.0))
 			
-			rotation.y = current_horizontal_angle
+			rotation.y = base_y_rotation + current_horizontal_angle
 			barrel_pivot.rotation.z = current_vertical_angle
 			
 		CannonState.AIM_HORIZONTAL:
-			
 			current_horizontal_angle += aim_speed * sweep_direction * delta
 			
-			if abs(current_horizontal_angle) > deg_to_rad(60.0):
-				sweep_direction *= -1 # Flips between 1 and -1
+			if abs(current_horizontal_angle) >= deg_to_rad(60.0):
+				current_horizontal_angle = sign(current_horizontal_angle) * deg_to_rad(60.0)
+				sweep_direction *= -1 
 				
-			
-			rotation.y = current_horizontal_angle
+			rotation.y = base_y_rotation + current_horizontal_angle
 			
 		CannonState.AIM_VERTICAL:
 			
@@ -131,7 +143,6 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		# Drop the cannon when the mouse button is released.
 		if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
 			if current_state == CannonState.MOVING:
 				drop()
@@ -140,8 +151,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
 		match current_state:
 			CannonState.PRE_AIM:
-				# Lock in the starting point and begin the timing sequence.
-				# The horizontal sweep continues from wherever the player aimed.
 				current_state = CannonState.AIM_HORIZONTAL
 				horiz_meter.show()
 			CannonState.AIM_HORIZONTAL:
@@ -174,6 +183,8 @@ func fire_cannon() -> void:
 	var aim_direction: Vector3 = barrel_pivot.global_transform.basis.x.normalized()
 	ball.apply_central_impulse(aim_direction * current_power) 
 	
+	GameManager.register_cannon_fire()
+	
 	await get_tree().create_timer(1.5).timeout
 	reset_cannon()
 # --- UI Functions ---
@@ -193,7 +204,7 @@ func reset_cannon() -> void:
 	vertical_sweep_dir = 1
 	power_direction = 1
 	
-	rotation.y = 0.0
+	rotation.y = base_y_rotation
 	barrel_pivot.rotation.z = 0.0
 	
 	power_bar.value = 0.0
@@ -212,6 +223,9 @@ func reset_cannon() -> void:
 func _on_selection_area_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		
+		if target and target.team != GameManager.current_turn:
+			print("Not your turn!")
+			return
 		# --- LEFT CLICK: Grab the piece ---
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if current_state == CannonState.IDLE:
@@ -231,8 +245,12 @@ func _on_selection_area_input_event(camera: Node, event: InputEvent, event_posit
 func _on_attack_button_pressed() -> void:
 	if attack_button and current_state == CannonState.MENU_OPEN:
 		attack_button.hide()
-		# Capture the cannon's current rotation so aiming starts from where it's actually pointing.
-		current_horizontal_angle = rotation.y
+		
+		base_y_rotation = rotation.y 
+		
+		current_horizontal_angle = 0.0 
+		
+		
 		current_vertical_angle = barrel_pivot.rotation.z
 		current_state = CannonState.PRE_AIM
 		crosshair.show()
@@ -242,17 +260,32 @@ func _on_attack_button_pressed() -> void:
 func pick_up() -> void:
 	current_state = CannonState.MOVING
 	original_y = global_position.y 
+	original_grid_pos = snap_to_grid(global_position)
 	global_position.y += 0.5 
-	set_mesh_transparency(self, 0.6) 
+	set_mesh_transparency(self, 0.6)
 
 func drop() -> void:
 	current_state = CannonState.IDLE
+	var final_pos = snap_to_grid(global_position)
+	
+	
+	if target.team == TargetComponent.Team.BLUE:
+		var steps_x = int(round((final_pos.x - original_grid_pos.x) / tile_size))
+		var steps_z = int(round((final_pos.z - original_grid_pos.z) / tile_size))
+		var total_steps = steps_x + steps_z
+		
+		if total_steps > 0:
+			GameManager.blue_ap -= total_steps
+			print("Blue moved ", total_steps, " spaces. Remaining AP: ", GameManager.blue_ap)
+	
+	
 	global_position.y = original_y
-	set_mesh_transparency(self, 0.0) 
+	global_position.x = final_pos.x
+	global_position.z = final_pos.z
+	set_mesh_transparency(self, 0.0)
 
 
 func snap_to_grid(raw_position: Vector3) -> Vector3:
-	## Snap to nearest grid tile center.
 	var snapped_x = round(raw_position.x / tile_size) * tile_size
 	var snapped_z = round(raw_position.z / tile_size) * tile_size
 	return Vector3(snapped_x, raw_position.y, snapped_z)

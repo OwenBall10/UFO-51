@@ -2,10 +2,15 @@ extends Node3D
 
 @export var move_speed: float = 15.0
 
+@export var min_x: float = -20.0
+@export var max_x: float = 20.0
+@export var min_z: float = -20.0
+@export var max_z: float = 20.0
+
 # --- GRID & RAYCAST VARIABLES ---
-@export var grid_cursor: Node3D # We will assign this in the editor
+@export var grid_cursor: Node3D 
 @export var cannon: Node3D 
-const FLOOR_COLLISION_MASK: int = 1 # We only want to hit the grass (Layer 1)
+const FLOOR_COLLISION_MASK: int = 1
 
 var target_y_rotation: float = 0.0
 
@@ -39,6 +44,9 @@ func handle_movement(delta: float) -> void:
 		var move_dir = (right * input_dir.x + forward * input_dir.y).normalized()
 		
 		global_position += move_dir * move_speed * delta
+		
+		global_position.x = clamp(global_position.x, min_x, max_x)
+		global_position.z = clamp(global_position.z, min_z, max_z)
 
 func handle_rotation(delta: float) -> void:
 
@@ -75,22 +83,18 @@ func _unhandled_input(event: InputEvent) -> void:
 			if cannon != null and "current_state" in cannon:
 				var state_moving = cannon.CannonState.MOVING if "CannonState" in cannon else 6
 				
-				# If we are holding the piece in the air, slam it down!
 				if cannon.current_state == state_moving:
 					cannon.drop()
-					get_viewport().set_input_as_handled() # Clean up the input stream
+					get_viewport().set_input_as_handled() 
 
 func _physics_process(delta: float) -> void:
 	if grid_cursor == null:
 		return
 		
-	# 1. Hide the grid ONLY if aiming or in menus (Idle is 0, Moving is the pickup state)
 	if cannon != null and "current_state" in cannon:
-		# If the cannon has a state machine, let's get its named states safely
 		var state_idle = cannon.CannonState.IDLE if "CannonState" in cannon else 0
 		var state_moving = cannon.CannonState.MOVING if "CannonState" in cannon else 6
 		
-		# Hide the grid if the cannon is doing an action that isn't Idle or Moving
 		if cannon.current_state != state_idle and cannon.current_state != state_moving:
 			grid_cursor.hide()
 			return
@@ -109,11 +113,9 @@ func _physics_process(delta: float) -> void:
 	var result = space_state.intersect_ray(query)
 	
 	if result:
-		# Update the visual blue grid square position on the floor
 		grid_cursor.update_position(result.position)
 		
 		# 3. Tactile Piece Hover Logic
-		# If the cannon is currently picked up, force its X and Z coordinates to match the grid tile
 		if cannon != null and "current_state" in cannon:
 			var state_moving = cannon.CannonState.MOVING if "CannonState" in cannon else 6
 			if cannon.current_state == state_moving:
